@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Solar System</title>
+    <script src = "js/three.min.js"></script>
+    <script src = "js/controls/OrbitControls.js"></script>  
+</head>
+<body>
+    
+</body>
+</html>
+
+
+<script>    
+        let scene, camera, renderer, solarSystem, sunMesh, earthMesh, mercuryMesh, venusMesh, moonMesh, marsMesh, jupiterMesh, saturnMesh, uranusMesh, neptuneMesh, controls;
+        let objects = [];
+
+        let createGeometry = function(){
+            let solarSystem = new THREE.Object3D();
+            scene.add(solarSystem);
+            objects.push(solarSystem);
+
+            let sphereGeometry = new THREE.SphereGeometry(1, 15, 15);
+
+            //Sun
+            let sunMaterial = new THREE.MeshPhongMaterial({emissive: 0xFFFF00});
+            sunMesh = new THREE.Mesh(sphereGeometry, sunMaterial);
+            sunMesh.scale.set(50, 50, 50);
+            solarSystem.add(sunMesh);
+            objects.push(sunMesh);
+
+            //Mercury
+            let mercuryOrbit = new THREE.Object3D();
+            mercuryOrbit.position.x = 60;
+            solarSystem.add(mercuryOrbit);
+            objects.push(mercuryOrbit);
+
+            let mercuryMaterial = new THREE.MeshPhongMaterial({color: 0x2233FF, emissive: "#89682f"});
+            mercuryMesh = new THREE.Mesh(sphereGeometry, mercuryMaterial);
+            mercuryMesh.scale.set(2, 2, 2);
+            mercuryOrbit.add(mercuryMesh);
+            objects.push(mercuryMesh);
+
+            //Venus
+            let venusOrbit = new THREE.Object3D();
+            venusOrbit.position.x = -75;
+            solarSystem.add(venusOrbit);
+            objects.push(venusOrbit);
+
+            let venusMaterial = new THREE.MeshPhongMaterial({color: 0x2233FF, emissive: "#d89537"});
+            venusMesh = new THREE.Mesh(sphereGeometry, venusMaterial);
+            venusMesh.scale.set(3.8, 3.8, 3.8);
+            venusOrbit.add(venusMesh);
+            objects.push(venusMesh);
+
+            //Earth
+            let earthOrbit = new THREE.Object3D();
+            earthOrbit.position.z = 90;
+            solarSystem.add(earthOrbit);
+            objects.push(earthOrbit);
+
+            let earthMaterial = new THREE.MeshPhongMaterial({color: 0x2233FF, emissive: 0x112244});
+            earthMesh = new THREE.Mesh(sphereGeometry, earthMaterial);
+            earthMesh.scale.set(4, 4, 4);
+            earthOrbit.add(earthMesh);
+            objects.push(earthMesh);
+
+            //Moon
+            let moonOrbit = new THREE.Object3D();
+            moonOrbit.position.x = 6;
+            earthOrbit.add(moonOrbit);
+
+            let moonMaterial = new THREE.MeshPhongMaterial({color: 0x888888, emissive: 0x222222});
+            moonMesh = new THREE.Mesh(sphereGeometry, moonMaterial);
+            moonMesh.scale.set(1, 1, 1);
+            moonOrbit.add(moonMesh);
+            objects.push(moonMesh);
+
+            //Mars
+            let marsOrbit = new THREE.Object3D();
+            marsOrbit.position.z = -110;
+            solarSystem.add(marsOrbit);
+            objects.push(marsOrbit);
+
+            let marsMaterial = new THREE.MeshPhongMaterial({color: 0x2233FF, emissive: "#966241"});
+            marsMesh = new THREE.Mesh(sphereGeometry, marsMaterial);
+            marsMesh.scale.set(3, 3, 3);
+            marsOrbit.add(marsMesh);
+            objects.push(marsMesh);
+
+            //Jupiter
+            let jupiterOrbit = new THREE.Object3D();
+            jupiterOrbit.position.x = 140;
+            solarSystem.add(jupiterOrbit);
+            objects.push(jupiterOrbit);
+
+            let jupiterMaterial = new THREE.MeshPhongMaterial({color: 0x2233FF, emissive: "#7a3613"});
+            jupiterMesh = new THREE.Mesh(sphereGeometry, jupiterMaterial);
+            jupiterMesh.scale.set(15, 15, 15);
+            jupiterOrbit.add(jupiterMesh);
+            objects.push(jupiterMesh);
+
+            //Saturn
+            let saturnOrbit = new THREE.Object3D();
+            saturnOrbit.position.x = -180;
+            solarSystem.add(saturnOrbit);
+            objects.push(saturnOrbit);
+
+            let saturnMaterial = new THREE.MeshPhongMaterial({color: 0x2233FF, emissive: "#f4dfaa"});
+            saturnMesh = new THREE.Mesh(sphereGeometry, saturnMaterial);
+            saturnMesh.scale.set(8, 8, 8);
+            saturnOrbit.add(saturnMesh);
+            objects.push(saturnMesh);
+
+            let cincinOrbit = new THREE.Object3D();
+            let cincinGeometry = new THREE.TorusGeometry(10, 1, 8, 24);
+            saturnOrbit.add(cincinOrbit);
+
+            let cincinMaterial = new THREE.MeshPhongMaterial({color: 0x888888, emissive: "#bfa152"});
+            cincinSaturnMesh = new THREE.Mesh(cincinGeometry, cincinMaterial);
+            cincinSaturnMesh.rotation.x = Math.PI / 3;
+            cincinOrbit.add(cincinSaturnMesh);
+            objects.push(cincinSaturnMesh);
+
+            //Uranus
+            let uranusOrbit = new THREE.Object3D();
+            uranusOrbit.position.z = 210;
+            solarSystem.add(uranusOrbit);
+            objects.push(uranusOrbit);
+
+            let uranusMaterial = new THREE.MeshPhongMaterial({color: 0x2233FF, emissive: "#869ca9"});
+            uranusMesh = new THREE.Mesh(sphereGeometry, uranusMaterial);
+            uranusMesh.scale.set(7, 7, 7);
+            uranusOrbit.add(uranusMesh);
+            objects.push(uranusMesh);
+
+            //Neptune
+            let neptuneOrbit = new THREE.Object3D();
+            neptuneOrbit.position.z = -230;
+            solarSystem.add(neptuneOrbit);
+            objects.push(neptuneOrbit);
+
+            let neptuneMaterial = new THREE.MeshPhongMaterial({color: 0x2233FF, emissive: "#182550"});
+            neptuneMesh = new THREE.Mesh(sphereGeometry, neptuneMaterial);
+            neptuneMesh.scale.set(5, 5, 5);
+            neptuneOrbit.add(neptuneMesh);
+            objects.push(neptuneMesh);
+        }
+
+        function getRing(r1, r2) {
+            var ring1Geometry = new THREE.RingGeometry(r1, r2, 100);
+            var ring1Material = new THREE.MeshBasicMaterial({color: 0xffffff, side: THREE.DoubleSide});
+            var myRing = new THREE.Mesh(ring1Geometry, ring1Material);
+            myRing.position.set(0, 0, 0);
+            myRing.rotation.x = Math.PI / 2;
+            scene.add(myRing);
+        }
+
+        function createVisibleRing() {
+            let ringMercury = getRing(60.2, 60.3);
+            let ringVenus = getRing(75.2, 75.3);
+            let ringEarth = getRing(90.2, 90.3);
+            let ringMars = getRing(110.2, 110.3);
+            let ringJupiter = getRing(140.2, 140.3);
+            let ringSaturn = getRing(180.2, 180.3);
+            let ringUranus = getRing(210.2, 210.3);
+            let ringNeptune = getRing(230.2, 230.3);
+        }
+
+        // set up the environment - 
+        // initiallize scene, camera, objects and renderer
+        let init = function() {
+            // 1. create the scene
+            scene = new THREE.Scene();
+            
+            // 2. create an locate the camera       
+            camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 1, 10000);
+            camera.position.y = 130;
+            camera.position.z = 120;
+            
+            // 3. create an locate the object on the scene           
+            createGeometry();
+            createVisibleRing();
+
+            rayCast = new THREE.Raycaster();
+            mouse = new THREE.Vector2();
+            mouse.x = mouse.y = -1;
+
+            let light = new THREE.PointLight(0xFFFFFF, 3);
+            scene.add(light);
+            
+            // 4. create the renderer     
+            renderer = new THREE.WebGLRenderer();   
+            renderer.setSize(window.innerWidth, window.innerHeight);
+            
+            document.body.appendChild(renderer.domElement);
+            document.addEventListener("click", onMouseClick, false);
+
+            // controls
+
+            controls = new THREE.OrbitControls( camera, renderer.domElement );
+            controls.listenToKeyEvents( window ); // optional
+
+            controls.enableDamping = true; // an animation loop is required when either damping or auto-rotation are enabled
+            controls.dampingFactor = 0.05;
+
+            controls.autoRotate = true;
+
+            controls.screenSpacePanning = false;      
+
+        };
+      
+        let ADD = 0.001;
+
+        let onMouseClick = function(e) {
+            ADD *= -1;
+            
+        };
+
+        // main animation loop - calls 50-60 in a second.
+        let mainLoop = function() {
+            objects.forEach((obj) => {
+                obj.rotation.y += ADD;
+            });
+
+            renderer.render(scene, camera);
+            requestAnimationFrame(mainLoop);
+        };
+        
+        ///////////////////////////////////////////////
+        init();
+        mainLoop();
+    </script>
+    
