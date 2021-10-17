@@ -14,11 +14,21 @@
 <script>    
         let scene, camera, renderer, solarSystem, sunMesh, earthMesh, mercuryMesh, venusMesh, moonMesh, marsMesh, jupiterMesh, saturnMesh, uranusMesh, neptuneMesh, controls;
         let objects = [];
+        let objects1 = [];
+        let objects2 = [];
 
         let createGeometry = function(){
             let solarSystem = new THREE.Object3D();
             scene.add(solarSystem);
             objects.push(solarSystem);
+
+            let solarSystem1 = new THREE.Object3D();
+            scene.add(solarSystem1);
+            objects1.push(solarSystem1);
+
+            let solarSystem2 = new THREE.Object3D();
+            scene.add(solarSystem2);
+            objects2.push(solarSystem2);
 
             let sphereGeometry = new THREE.SphereGeometry(1, 15, 15);
 
@@ -44,26 +54,26 @@
             //Venus
             let venusOrbit = new THREE.Object3D();
             venusOrbit.position.x = -75;
-            solarSystem.add(venusOrbit);
-            objects.push(venusOrbit);
+            solarSystem1.add(venusOrbit);
+            objects1.push(venusOrbit);
 
             let venusMaterial = new THREE.MeshPhongMaterial({color: 0x2233FF, emissive: "#d89537"});
             venusMesh = new THREE.Mesh(sphereGeometry, venusMaterial);
             venusMesh.scale.set(3.8, 3.8, 3.8);
             venusOrbit.add(venusMesh);
-            objects.push(venusMesh);
+            objects1.push(venusMesh);
 
             //Earth
             let earthOrbit = new THREE.Object3D();
             earthOrbit.position.z = 90;
-            solarSystem.add(earthOrbit);
-            objects.push(earthOrbit);
+            solarSystem2.add(earthOrbit);
+            objects2.push(earthOrbit);
 
             let earthMaterial = new THREE.MeshPhongMaterial({color: 0x2233FF, emissive: 0x112244});
             earthMesh = new THREE.Mesh(sphereGeometry, earthMaterial);
             earthMesh.scale.set(4, 4, 4);
             earthOrbit.add(earthMesh);
-            objects.push(earthMesh);
+            objects2.push(earthMesh);
 
             //Moon
             let moonOrbit = new THREE.Object3D();
@@ -74,7 +84,7 @@
             moonMesh = new THREE.Mesh(sphereGeometry, moonMaterial);
             moonMesh.scale.set(1, 1, 1);
             moonOrbit.add(moonMesh);
-            objects.push(moonMesh);
+            objects2.push(moonMesh);
 
             //Mars
             let marsOrbit = new THREE.Object3D();
@@ -91,26 +101,26 @@
             //Jupiter
             let jupiterOrbit = new THREE.Object3D();
             jupiterOrbit.position.x = 140;
-            solarSystem.add(jupiterOrbit);
-            objects.push(jupiterOrbit);
+            solarSystem1.add(jupiterOrbit);
+            objects1.push(jupiterOrbit);
 
             let jupiterMaterial = new THREE.MeshPhongMaterial({color: 0x2233FF, emissive: "#7a3613"});
             jupiterMesh = new THREE.Mesh(sphereGeometry, jupiterMaterial);
             jupiterMesh.scale.set(15, 15, 15);
             jupiterOrbit.add(jupiterMesh);
-            objects.push(jupiterMesh);
+            objects1.push(jupiterMesh);
 
             //Saturn
             let saturnOrbit = new THREE.Object3D();
             saturnOrbit.position.x = -180;
-            solarSystem.add(saturnOrbit);
-            objects.push(saturnOrbit);
+            solarSystem2.add(saturnOrbit);
+            objects2.push(saturnOrbit);
 
             let saturnMaterial = new THREE.MeshPhongMaterial({color: 0x2233FF, emissive: "#f4dfaa"});
             saturnMesh = new THREE.Mesh(sphereGeometry, saturnMaterial);
             saturnMesh.scale.set(8, 8, 8);
             saturnOrbit.add(saturnMesh);
-            objects.push(saturnMesh);
+            objects2.push(saturnMesh);
 
             let cincinOrbit = new THREE.Object3D();
             let cincinGeometry = new THREE.TorusGeometry(10, 1, 8, 24);
@@ -120,7 +130,7 @@
             cincinSaturnMesh = new THREE.Mesh(cincinGeometry, cincinMaterial);
             cincinSaturnMesh.rotation.x = Math.PI / 3;
             cincinOrbit.add(cincinSaturnMesh);
-            objects.push(cincinSaturnMesh);
+            objects2.push(cincinSaturnMesh);
 
             //Uranus
             let uranusOrbit = new THREE.Object3D();
@@ -137,14 +147,14 @@
             //Neptune
             let neptuneOrbit = new THREE.Object3D();
             neptuneOrbit.position.z = -230;
-            solarSystem.add(neptuneOrbit);
-            objects.push(neptuneOrbit);
+            solarSystem1.add(neptuneOrbit);
+            objects1.push(neptuneOrbit);
 
             let neptuneMaterial = new THREE.MeshPhongMaterial({color: 0x2233FF, emissive: "#182550"});
             neptuneMesh = new THREE.Mesh(sphereGeometry, neptuneMaterial);
             neptuneMesh.scale.set(5, 5, 5);
             neptuneOrbit.add(neptuneMesh);
-            objects.push(neptuneMesh);
+            objects1.push(neptuneMesh);
         }
 
         function getRing(r1, r2) {
@@ -182,11 +192,7 @@
             createGeometry();
             createVisibleRing();
 
-            rayCast = new THREE.Raycaster();
-            mouse = new THREE.Vector2();
-            mouse.x = mouse.y = -1;
-
-            let light = new THREE.PointLight(0xFFFFFF, 3);
+            let light = new THREE.PointLight(0xFFFFFF, 1.5);
             scene.add(light);
             
             // 4. create the renderer     
@@ -197,23 +203,17 @@
             document.addEventListener("click", onMouseClick, false);
 
             // controls
-
             controls = new THREE.OrbitControls( camera, renderer.domElement );
-            controls.listenToKeyEvents( window ); // optional
-
-            controls.enableDamping = true; // an animation loop is required when either damping or auto-rotation are enabled
-            controls.dampingFactor = 0.05;
-
-            controls.autoRotate = true;
-
-            controls.screenSpacePanning = false;      
+            controls.listenToKeyEvents( window );
 
         };
       
-        let ADD = 0.001;
+        let ADD2 = 0.002;
+        let ADD = 0.0073;
+        let ADD1 = 0.0045;
 
         let onMouseClick = function(e) {
-            ADD *= -1;
+            ADD1 *= -1;
             
         };
 
@@ -221,6 +221,14 @@
         let mainLoop = function() {
             objects.forEach((obj) => {
                 obj.rotation.y += ADD;
+            });
+
+            objects1.forEach((obj) => {
+                obj.rotation.y += ADD1;
+            });
+
+            objects2.forEach((obj) => {
+                obj.rotation.y += ADD2;
             });
 
             renderer.render(scene, camera);
