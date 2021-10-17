@@ -195,6 +195,7 @@
             
             document.body.appendChild(renderer.domElement);
             document.addEventListener("click", onMouseClick, false);
+            document.addEventListener( 'keydown', onKeyDown, false ); 
 
             // controls
 
@@ -215,6 +216,17 @@
         let onMouseClick = function(e) {
             ADD *= -1;
             
+        };
+
+        let onKeyDown = function(e) {
+        if(e.keyCode == LEFT)
+            camera.position.x -= 0.2;
+        else if(e.keyCode == RIGHT)
+            camera.position.x += 0.2;
+        else if(e.keyCode == UP)
+            camera.position.y += 0.2;
+        else if(e.keyCode == DOWN)
+            camera.position.y -= 0.2;
         };
 
         // main animation loop - calls 50-60 in a second.
